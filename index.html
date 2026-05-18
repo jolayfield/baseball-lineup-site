@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baseball Lineup — Fair Rotations for Youth Baseball</title>
+  <meta name="description" content="Baseball Lineup builds fair rotation cards in seconds. Every player, every position, every inning. Built for youth baseball coaches." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --navy: #1a2f5c; --gold: #c4873a; }
+
+    .pos-P  { background: #fee2e2; color: #b91c1c; }
+    .pos-C  { background: #fef3c7; color: #92400e; }
+    .pos-IF { background: #dbeafe; color: #1e40af; }
+    .pos-OF { background: #dcfce7; color: #15803d; }
+    .pos-BN { background: #f3f4f6; color: #9ca3af; }
+
+    .inn-active-header { background-color: #c4873a !important; color: white !important; border-radius: 4px 4px 0 0; }
+    .inn-active td { background-color: #fffbeb; }
+
+    td, th { transition: background-color 0.35s ease; }
+
+    .hero-bg { background: linear-gradient(140deg, #162648 0%, #1e3a6e 55%, #1a2f5c 100%); }
+
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .live-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-[#f3f5f9] text-gray-800" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+
+  <!-- Nav -->
+  <nav class="bg-[#1a2f5c] px-5 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="13" fill="white"/>
+        <path d="M 8 6 Q 12 10 10 14 Q 8 18 12 22" stroke="#dc2626" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <path d="M 20 6 Q 16 10 18 14 Q 20 18 16 22" stroke="#dc2626" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <line x1="9.5" y1="9" x2="7" y2="9.5" stroke="#dc2626" stroke-width="1" stroke-linecap="round"/>
+        <line x1="9.2" y1="12" x2="6.7" y2="12" stroke="#dc2626" stroke-width="1" stroke-linecap="round"/>
+        <line x1="9.5" y1="15.5" x2="7" y2="16" stroke="#dc2626" stroke-width="1" stroke-linecap="round"/>
+        <line x1="10.2" y1="18.5" x2="7.7" y2="19" stroke="#dc2626" stroke-width="1" stroke-linecap="round"/>
+        <line x1="18.5" y1="9" x2="21" y2="9.5" stroke="#dc2626" stroke-width="1" stroke-linecap="round"/>
+        <line x1="18.8" y1="12" x2="21.3" y2="12" stroke="#dc2626" stroke-width="1" stroke-linecap="round"/>
+        <line x1="18.5" y1="15.5" x2="21" y2="16" stroke="#dc2626" stroke-width="1" stroke-linecap="round"/>
+        <line x1="17.8" y1="18.5" x2="20.3" y2="19" stroke="#dc2626" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+      <span class="text-white font-bold text-base tracking-tight">Baseball Lineup</span>
+    </div>
+    <!-- TODO: Replace # with App Store URL when live -->
+    <a href="#" class="bg-[#c4873a] text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#b07530] transition-colors">
+      Download
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero-bg px-5 pt-14 pb-0 overflow-hidden">
+    <div class="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+
+      <!-- Left: copy -->
+      <div class="flex-1 text-center lg:text-left pb-12 lg:pb-16">
+        <span class="inline-block bg-white/10 text-blue-200 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-5">Free to start</span>
+        <h1 class="text-4xl lg:text-5xl font-bold text-white leading-tight mb-5">
+          Fair lineups.<br/>No spreadsheet.<br/>No arguments.
+        </h1>
+        <p class="text-blue-200 text-lg leading-relaxed mb-8 max-w-sm mx-auto lg:mx-0">
+          Baseball Lineup builds fair rotation cards in seconds — every kid plays every position, so you can focus on coaching.
+        </p>
+        <!-- TODO: Replace # with App Store URL when live -->
+        <a href="#" class="inline-flex items-center gap-2.5 bg-white text-[#1a2f5c] font-bold px-6 py-3.5 rounded-xl text-sm hover:bg-gray-100 transition-colors shadow-lg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Download on the App Store
+        </a>
+        <p class="text-blue-400 text-xs mt-3">Free for your first team · iOS</p>
+      </div>
+
+      <!-- Right: animated lineup demo -->
+      <div class="flex-1 flex justify-center lg:justify-end w-full lg:self-end">
+        <div class="bg-white rounded-t-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+
+          <!-- Fake app title bar -->
+          <div class="bg-[#1a2f5c] px-4 py-3 flex items-center justify-between">
+            <div>
+              <p class="text-white font-semibold text-sm">Tigers vs. Cardinals</p>
+              <p class="text-blue-300 text-xs" id="demo-label">Inning 1 of 6</p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="live-dot w-1.5 h-1.5 rounded-full bg-[#c4873a] inline-block"></span>
+              <span class="text-[#c4873a] text-xs font-bold tracking-wide">DEMO</span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs border-collapse" id="demo-table">
+              <thead>
+                <tr class="bg-gray-50 border-b border-gray-100">
+                  <th class="text-left py-2 px-3 text-gray-400 font-medium w-28">Player</th>
+                  <th id="h0" class="py-2 px-1.5 text-gray-400 font-medium text-center w-9">1</th>
+                  <th id="h1" class="py-2 px-1.5 text-gray-400 font-medium text-center w-9">2</th>
+                  <th id="h2" class="py-2 px-1.5 text-gray-400 font-medium text-center w-9">3</th>
+                  <th id="h3" class="py-2 px-1.5 text-gray-400 font-medium text-center w-9">4</th>
+                  <th id="h4" class="py-2 px-1.5 text-gray-400 font-medium text-center w-9">5</th>
+                  <th id="h5" class="py-2 px-1.5 text-gray-400 font-medium text-center w-9">6</th>
+                </tr>
+              </thead>
+              <tbody id="demo-body"></tbody>
+            </table>
+          </div>
+
+          <!-- Footer bar -->
+          <div class="px-4 py-2.5 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-gray-400 text-xs">Generated · Locked ✓</span>
+            <span class="text-[#1a2f5c] text-xs font-semibold">Share ↗</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="px-5 py-20">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-2xl lg:text-3xl font-bold text-center text-[#1a2f5c] mb-2">Everything you need on game day</h2>
+      <p class="text-gray-500 text-center mb-12">From roster to final out — in one app.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-[#1a2f5c] mb-2 text-sm">Smart Rotation</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">No player sits two innings in a row. Position preferences and restrictions are respected automatically.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-[#1a2f5c] mb-2 text-sm">Game Day Availability</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Mark who's absent before generating — the rotation adjusts automatically around your available players.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-[#1a2f5c] mb-2 text-sm">Share with Parents</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">One tap sends a public link parents can open from any phone — no app needed to view.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-[#1a2f5c] mb-2 text-sm">Scorebook Included</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Track at-bats, pitch counts, and base runners without switching apps. Season stats build automatically.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="bg-white px-5 py-20">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-2xl lg:text-3xl font-bold text-[#1a2f5c] mb-2">Ready in under a minute</h2>
+      <p class="text-gray-500 mb-14">Three steps from opening the app to sharing the lineup.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-left md:text-center">
+
+        <div class="flex md:flex-col items-start md:items-center gap-4">
+          <div class="shrink-0 w-12 h-12 rounded-full bg-[#1a2f5c] text-white text-lg font-bold flex items-center justify-center">1</div>
+          <div>
+            <h3 class="font-bold text-[#1a2f5c] mb-1.5">Build your roster</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Add players, jersey numbers, and tag any position restrictions — blocked or preferred.</p>
+          </div>
+        </div>
+
+        <div class="flex md:flex-col items-start md:items-center gap-4">
+          <div class="shrink-0 w-12 h-12 rounded-full bg-[#1a2f5c] text-white text-lg font-bold flex items-center justify-center">2</div>
+          <div>
+            <h3 class="font-bold text-[#1a2f5c] mb-1.5">Mark availability</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Before each game, check off who's showing up. The algorithm works around whoever's there.</p>
+          </div>
+        </div>
+
+        <div class="flex md:flex-col items-start md:items-center gap-4">
+          <div class="shrink-0 w-12 h-12 rounded-full bg-[#1a2f5c] text-white text-lg font-bold flex items-center justify-center">3</div>
+          <div>
+            <h3 class="font-bold text-[#1a2f5c] mb-1.5">Generate and share</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Tap Generate. Review, lock, and send the link to parents — all from the lineup screen.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#1a2f5c] px-5 py-10 text-center">
+    <div class="flex items-center justify-center gap-2 mb-4">
+      <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="13" fill="white"/>
+        <path d="M 8 6 Q 12 10 10 14 Q 8 18 12 22" stroke="#dc2626" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <path d="M 20 6 Q 16 10 18 14 Q 20 18 16 22" stroke="#dc2626" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="text-white font-bold">Baseball Lineup</span>
+    </div>
+    <div class="flex items-center justify-center gap-6 text-sm mb-6">
+      <a href="privacy.html" class="text-blue-300 hover:text-white transition-colors">Privacy Policy</a>
+      <a href="mailto:jolayfield@gmail.com" class="text-blue-300 hover:text-white transition-colors">Contact</a>
+    </div>
+    <p class="text-blue-400 text-xs">© 2025 Baseball Lineup</p>
+  </footer>
+
+  <script>
+    const players = [
+      { name: 'Alex',   num: '3'  },
+      { name: 'Ben',    num: '7'  },
+      { name: 'Carlos', num: '12' },
+      { name: 'Diego',  num: '5'  },
+      { name: 'Emma',   num: '9'  },
+      { name: 'Finn',   num: '1'  },
+      { name: 'Grace',  num: '14' },
+      { name: 'Hunter', num: '8'  },
+      { name: 'Isla',   num: '11' },
+      { name: 'Jake',   num: '4'  },
+      { name: 'Lily',   num: '6'  },
+    ];
+
+    // rotation[inning][playerIdx] — 11 players, 9 fielders, 2 bench per inning
+    const rotation = [
+      ['P',  'C',  '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', '—',  '—' ],
+      ['1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', '—',  '—',  'P',  'C' ],
+      ['3B', 'SS', 'LF', 'CF', 'RF', '—',  '—',  'P',  'C',  '1B', '2B'],
+      ['LF', 'CF', 'RF', '—',  '—',  'P',  'C',  '1B', '2B', '3B', 'SS'],
+      ['RF', '—',  '—',  'P',  'C',  '1B', '2B', '3B', 'SS', 'LF', 'CF'],
+      ['—',  'P',  'C',  '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', '—' ],
+    ];
+
+    function posClass(pos) {
+      if (pos === 'P')  return 'pos-P';
+      if (pos === 'C')  return 'pos-C';
+      if (['1B','2B','3B','SS'].includes(pos)) return 'pos-IF';
+      if (['LF','CF','RF'].includes(pos))      return 'pos-OF';
+      return 'pos-BN';
+    }
+
+    // Build table rows
+    const tbody = document.getElementById('demo-body');
+    players.forEach((p, pi) => {
+      const tr = document.createElement('tr');
+      tr.id = `row${pi}`;
+      tr.className = 'border-b border-gray-50';
+      const cells = rotation.map((inn, ii) => {
+        const pos = inn[pi];
+        return `<td id="c${pi}-${ii}" class="py-1.5 px-1 text-center">
+          <span class="${posClass(pos)} font-semibold rounded px-1 py-0.5 text-xs inline-block">${pos}</span>
+        </td>`;
+      }).join('');
+      tr.innerHTML = `<td class="py-2 px-3 text-gray-700 font-medium whitespace-nowrap">#${p.num} ${p.name}</td>${cells}`;
+      tbody.appendChild(tr);
+    });
+
+    let active = 0;
+
+    function highlight(inning) {
+      for (let i = 0; i < 6; i++) {
+        const h = document.getElementById(`h${i}`);
+        if (i === inning) {
+          h.className = 'py-2 px-1.5 font-bold text-center w-9 inn-active-header';
+        } else {
+          h.className = 'py-2 px-1.5 text-gray-400 font-medium text-center w-9';
+        }
+      }
+      players.forEach((_, pi) => {
+        const row = document.getElementById(`row${pi}`);
+        if (inning === 0) {
+          row.classList.remove('inn-active');
+        }
+        for (let ii = 0; ii < 6; ii++) {
+          const cell = document.getElementById(`c${pi}-${ii}`);
+          ii === inning ? cell.classList.add('inn-active') : cell.classList.remove('inn-active');
+        }
+      });
+      document.getElementById('demo-label').textContent = `Inning ${inning + 1} of 6`;
+    }
+
+    highlight(0);
+    setInterval(() => {
+      active = (active + 1) % 6;
+      highlight(active);
+    }, 1800);
+  </script>
+
+</body>
+</html>
